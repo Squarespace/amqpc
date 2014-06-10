@@ -1,8 +1,6 @@
 package main
 
 import (
-	"crypto/sha1"
-	"encoding/base64"
 	"flag"
 	"fmt"
 	"log"
@@ -142,13 +140,6 @@ func startProducer(done chan error, body *string, messageCount, interval int) {
 }
 
 func publish(p *Producer, body *string, i int) {
-	// Generate SHA for body
-	hasher := sha1.New()
-	hasher.Write([]byte(*body + string(i)))
-	sha := base64.URLEncoding.EncodeToString(hasher.Sum(nil))
-
-	// String to publish
-	bodyString := fmt.Sprintf("body: %s - hash: %s", *body, sha)
-
-	p.Publish(*exchange, *routingKey, bodyString)
+	fmt.Sprintf("body: %s", *body)
+	p.Publish(*exchange, *routingKey, *body)
 }
